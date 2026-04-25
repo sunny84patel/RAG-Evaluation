@@ -171,3 +171,6 @@ Running on a 50-page HR Policy PDF across 3 configurations:
 ## 📝 License
 
 MIT
+
+<img width="2870" height="1426" alt="image" src="https://github.com/user-attachments/assets/45571026-80c8-463a-9b15-cb3be73874af" />
+
