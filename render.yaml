@@ -1,0 +1,18 @@
+# render.yaml — Deploy backend to Render free tier
+# Docs: https://render.com/docs/yaml-spec
+
+services:
+  - type: web
+    name: rag-eval-studio-api
+    runtime: python
+    plan: free                          # 512 MB RAM, 0.1 CPU
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false                     # you paste this in Render dashboard
+      - key: HF_API_KEY
+        sync: false                     # you paste this in Render dashboard
+      - key: PYTHON_VERSION
+        value: 3.11.0
+    healthCheckPath: /health
