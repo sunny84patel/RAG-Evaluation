@@ -3,13 +3,17 @@ frontend/app.py — RAG-Eval Studio Streamlit Dashboard
 Run: streamlit run frontend/app.py
 """
 
+import os
 import time
-import requests
-import streamlit as st
+from pathlib import Path
+
 import pandas as pd
 import plotly.graph_objects as go
+import requests
+import streamlit as st
+from dotenv import load_dotenv
 
-API_BASE = "http://localhost:8000"
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 st.set_page_config(
     page_title="RAG-Eval Studio",
@@ -17,6 +21,22 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
+
+def _api_base() -> str:
+    """FastAPI base URL: RAG_EVAL_API_BASE env, then Streamlit secrets, else local dev."""
+    raw = (os.environ.get("RAG_EVAL_API_BASE") or "").strip()
+    if not raw:
+        try:
+            raw = str(st.secrets["RAG_EVAL_API_BASE"]).strip()
+        except (KeyError, FileNotFoundError, TypeError, RuntimeError, AttributeError):
+            raw = ""
+    if not raw:
+        raw = "http://localhost:8000"
+    return raw.rstrip("/")
+
+
+API_BASE = _api_base()
 
 st.markdown("""
 <style>

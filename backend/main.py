@@ -24,9 +24,15 @@ load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 app = FastAPI(title="RAG-Eval Studio API", version="1.0.0")
 
+# Streamlit (hosted + local dev) — browsers send Origin without a trailing path
+_CORS_ORIGINS = [
+    "https://rag-evaluation-sdf.streamlit.app",
+    "http://localhost:8501",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_CORS_ORIGINS,
     allow_methods=["*"],
     allow_headers=["*"],
 )
